@@ -212,18 +212,17 @@
     (execute twice the procedure above, once in each VM)
 
 ### Create Storage Account (our blob storage - not the same as stgforbash)
-at portal
+    at portal
 
 ### Create MS-SQL DB (PaaS)
-at portal
+    at portal
 
 ### Create a Web App PaaS service
-at portal
+    at portal
 
-# 2. STARTING WITH SECURITY
+## 2. STARTING WITH SECURITY
 
-### Encrypting VM disk
-### (for Linux Server)
+### Encrypting VM disk (for Linux Server)
 ### Creating key vault and key
     az provider register -n Microsoft.KeyVault
 
@@ -236,7 +235,6 @@ at portal
     az keyvault key create --vault-name malworkshoprg1kv2 --name keyrg1 --protection software
     
 ### Create an Azure Active Directory service principal
-
     az ad sp create-for-rbac
 
 ### result after command run (THAT'S ONLY AN EXAMPLE):
@@ -255,7 +253,6 @@ at portal
       --secret-permissions set
       
 ### Encrypting the Virtual Machine (bringing all together)
-
     To encrypt the virtual disks, you bring together all the previous components:
     Specify the Azure Active Directory service principal and password.
     Specify the Key Vault to store the metadata for your encrypted disks.
