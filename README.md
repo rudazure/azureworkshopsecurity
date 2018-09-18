@@ -1,13 +1,13 @@
 # azureworkshopsecurity
 
-## 0. Instructor side
+## 0. Environment preparation
 ### Create multiple RGs
 for i in {1..30}; 
 do
 az group create --name malworkshoprg$i --location eastus
 done
 
-## 1. Building the environment
+## 1. Building the basic environment
 
 #### Create the VNET and Subnet1
     az network vnet create \
@@ -220,7 +220,7 @@ at portal
 ### Create a Web App PaaS service
 at portal
 
-# STARTING WITH SECURITY TESTS
+# 2. STARTING WITH SECURITY
 
 ### Encrypting VM disk
 ### (for Linux Server)
@@ -240,11 +240,11 @@ at portal
     az ad sp create-for-rbac
 
 ### result after command run (THAT'S ONLY AN EXAMPLE):
-  "appId": "1376e4ce-e817-4074-ba12-d9651851b1a2",
-  "displayName": "azure-cli-2018-09-17-19-56-50",
-  "name": "http://azure-cli-2018-09-17-19-56-50",
-  "password": "ba1c9b2c-222d-47db-9325-fd8a51b7a549",
-  "tenant": "cadb8fc3-740e-4f2d-b0d5-473b447179ba"
+      "appId": "1376e4ce-e817-4074-ba12-d9651851b1a2",
+      "displayName": "azure-cli-2018-09-17-19-56-50",
+      "name": "http://azure-cli-2018-09-17-19-56-50",
+      "password": "ba1c9b2c-222d-47db-9325-fd8a51b7a549",
+      "tenant": "cadb8fc3-740e-4f2d-b0d5-473b447179ba"
       
 ### continuing ... (creating the variables)
     read sp_id sp_password <<< $(az ad sp create-for-rbac --query [appId,password] -o tsv)
