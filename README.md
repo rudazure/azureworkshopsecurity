@@ -2,10 +2,10 @@
 
 ## 0. Environment preparation
 ### Create multiple RGs
-for i in {1..30}; 
-do
-az group create --name malworkshoprg$i --location eastus
-done
+    for i in {1..30}; 
+    do
+    az group create --name malworkshoprg$i --location eastus
+    done
 
 ## 1. Building the basic environment
 
