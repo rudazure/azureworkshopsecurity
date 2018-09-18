@@ -1,5 +1,12 @@
 # azureworkshopsecurity
 
+## 0. Instructor side
+### Create multiple RGs
+for i in {1..30}; 
+do
+az group create --name malworkshoprg$i --location eastus
+done
+
 ## 1. Building the environment
 
 #### Create the VNET and Subnet1
@@ -213,5 +220,63 @@ at portal
 ### Create a Web App PaaS service
 at portal
 
+# STARTING WITH SECURITY TESTS
 
+### Encrypting VM disk
+### (for Linux Server)
+### Creating key vault and key
+    az provider register -n Microsoft.KeyVault
 
+    az keyvault create \
+        --name malworkshoprg1kv2 \
+        --resource-group malworkshoprg1 \
+        --location eastus \
+        --enabled-for-disk-encryption True
+
+    az keyvault key create --vault-name malworkshoprg1kv2 --name keyrg1 --protection software
+    
+### Create an Azure Active Directory service principal
+
+    az ad sp create-for-rbac
+
+### result after command run (THAT'S ONLY AN EXAMPLE):
+  "appId": "1376e4ce-e817-4074-ba12-d9651851b1a2",
+  "displayName": "azure-cli-2018-09-17-19-56-50",
+  "name": "http://azure-cli-2018-09-17-19-56-50",
+  "password": "ba1c9b2c-222d-47db-9325-fd8a51b7a549",
+  "tenant": "cadb8fc3-740e-4f2d-b0d5-473b447179ba"
+      
+### continuing ... (creating the variables)
+    read sp_id sp_password <<< $(az ad sp create-for-rbac --query [appId,password] -o tsv)
+
+### Setting permission on key vault for service principal
+    az keyvault set-policy --name malworkshoprg1kv2 --spn $sp_id \
+      --key-permissions wrapKey \
+      --secret-permissions set
+      
+### Encrypting the Virtual Machine (bringing all together)
+
+    To encrypt the virtual disks, you bring together all the previous components:
+    Specify the Azure Active Directory service principal and password.
+    Specify the Key Vault to store the metadata for your encrypted disks.
+    Specify the cryptographic keys to use for the actual encryption and decryption.
+    Specify whether you want to encrypt the OS disk, the data disks, or all.
+    
+    az vm encryption enable \
+    --resource-group malworkshoprg1 \
+    --name malwslinuxvm \
+    --aad-client-id $sp_id \
+    --aad-client-secret $sp_password \
+    --disk-encryption-keyvault malworkshoprg1kv2 \
+    --key-encryption-key keyrg1 \
+    --volume-type all
+    
+### monitor the process of encrypting
+    az vm encryption show --resource-group malworkshoprg1 --name malwslinuxvm
+    
+### when the status appearing as "pending" , you can reboot the VM
+    az vm restart --resource-group malworkshoprg1 --name malwslinuxvm
+    
+### confirm that your disk is encrypted
+    az vm encryption show --resource-group malworkshoprg1 --name malwslinuxvm
+    
