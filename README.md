@@ -218,7 +218,7 @@
 
 ### Encrypting VM disk (for Linux Server)
 ### Creating key vault and key
-    az provider register -n Microsoft.KeyVault
+
 
     az keyvault create \
         --name malworkshoprg1kv2 \
