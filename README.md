@@ -271,3 +271,7 @@
 ### confirm that your disk is encrypted
     az vm encryption show --resource-group malworkshoprg1 --name malwslinuxvm
     
+    
+## AZCOPY example (must change source, dest and destkey)
+    AzCopy /Source:C:\testazcopy /Dest:https://malworkshoprg1stg.file.core.windows.net/malworkshoprg1fileshare/ /DestKey:kGkwIUGyRt3psqIdiagFbAtyO+xZOU3zaJOUNo2/NL+aTzPR/qFbGHIKbilT40Taj5uAAM+toFYbbIn79hBgAA== /S
+
