@@ -216,7 +216,7 @@
 
 ## 2. STARTING WITH SECURITY
 
-### Encrypting VM disk (for Linux Server)
+### 2.1 Encrypting VM disk (for Linux Server)
 ### Creating key vault and key
 
 
@@ -272,6 +272,6 @@
     az vm encryption show --resource-group malworkshoprg1 --name malwslinuxvm
     
     
-## AZCOPY example (must change source, dest and destkey)
+### 2.2 AZCOPY example (must change source, dest and destkey)
     AzCopy /Source:C:\testazcopy /Dest:https://malworkshoprg1stg.file.core.windows.net/malworkshoprg1fileshare/ /DestKey:kGkwIUGyRt3psqIdiagFbAtyO+xZOU3zaJOUNo2/NL+aTzPR/qFbGHIKbilT40Taj5uAAM+toFYbbIn79hBgAA== /S
 
